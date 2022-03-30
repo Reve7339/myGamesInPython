@@ -3,12 +3,10 @@ import random
 from files.hangman_ascci import man_pics
 
 
-def checking_user_input(character):
+def valid_game_required(chosen):
     try:
-        if character.isnumeric():
-            raise ValueError("Just type alphabet characters")
-        if character.isupper():
-            raise ValueError("Only lowercase characters are allowed")
+        if chosen.isdigit() is False:
+            raise ValueError("Please type a digit")
         return True
     except ValueError as ve:
         os.system("clear")
@@ -16,7 +14,25 @@ def checking_user_input(character):
         return False
 
 
-def run():
+def guess_the_number():
+    pass
+
+
+def checking_user_input_hangman_game(character):
+    str(character)
+    try:
+        if len(character) > 1:
+            raise ValueError("Please type just one character")
+        if ord(character) < 97 | ord(character) > 122:
+            raise ValueError("Characters out of range of [a-z] (only lowercase characters) and numbers are not allowed")
+        return True
+    except ValueError as ve:
+        os.system("clear")
+        print(ve)
+        return False
+
+
+def hangman_game():
     user_lives = len(man_pics)-1
     user_word = list()
     string_user_word = str()
@@ -36,7 +52,7 @@ def run():
         print("You have ", user_lives, "lives")
         matches = False
         character = input("Type a letter to match: ")
-        if checking_user_input(character) is False: continue
+        if checking_user_input_hangman_game(character) is False: continue
         os.system("clear")
         for index in range(len(random_word)):
             if character == random_word[index]:
@@ -61,6 +77,29 @@ def run():
             print("The word is:", random_word)
             break
         os.system("clear")
+
+
+def run():
+    while True:
+        game = input("""
+         _     _  _______  ___      _______  _______  __   __  _______ 
+        | | _ | ||       ||   |    |       ||       ||  |_|  ||       |
+        | || || ||    ___||   |    |       ||   _   ||       ||    ___|
+        |       ||   |___ |   |    |       ||  | |  ||       ||   |___ 
+        |       ||    ___||   |___ |      _||  |_|  ||       ||    ___|
+        |   _   ||   |___ |       ||     |_ |       || ||_|| ||   |___ 
+        |__| |__||_______||_______||_______||_______||_|   |_||_______|
+    
+        Select a game (type his number on the prompt):
+            1.- The hangman game
+            2.- Guess the number
+            0.- To exit""")
+        if valid_game_required(game) is False: continue
+        if int(game) == 0: break
+        if int(game) == 1:
+            hangman_game()
+        elif int(game) == 2:
+            guess_the_number()
 
 
 if __name__ == "__main__":
